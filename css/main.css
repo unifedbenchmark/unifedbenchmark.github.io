@@ -59,6 +59,7 @@ footer {
   z-index: 1;
 }
 .nav-link,
+.link-simple,
 .navbar-brand {
   color: inherit;
   cursor: pointer;
@@ -76,6 +77,11 @@ footer {
   font-size: 1.3em;
   margin-right: 1.5em !important;
 }
+
+.link-simple{
+  color: #265483;
+}
+
 
 .navbar-collapse {
   justify-content: flex-end;
