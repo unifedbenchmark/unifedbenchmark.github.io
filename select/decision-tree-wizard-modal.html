@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h3 class="modal-title" ng-bind="title"></h3>
+</div>
+<div class="modal-body">
+    <decision-tree node="decisionTree" on-result="onDecisionResult(result)" on-clear="onDecisionClear()"></decision-tree>
+    <div class="decision-tree-result"></div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" id="acceptButton" ng-click="$close(result)" ng-disabled="!result">Done</button>
+    <button class="btn btn-default" ng-click="$dismiss()">Cancel</button>
+</div>
