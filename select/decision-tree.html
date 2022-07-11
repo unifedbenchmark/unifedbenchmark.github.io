@@ -1,0 +1,22 @@
+<div class="decision-tree">
+    <div class="container-row">
+        <div class="form-group">
+            <label>{{node.question ? node.question : 'Please select an option:'}}</label>
+
+            <ng-switch on="node.selector">
+                <div ng-switch-when="drop-down" class="decision-tree-select-wrapper">
+                    <ui-select autofocus focus-on="new-decision-appended" ng-model="decision.selected" theme="bootstrap" style="width: 330px;">
+                        <ui-select-match allow-clear="false" placeholder=""><span ng-bind="$select.selected.value"></span></ui-select-match>
+                        <ui-select-choices repeat="child in (children | filter: { value: $select.search })">
+                            <div ng-bind-html="child.value | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <div ng-switch-default class="decision-tree-buttons-container">
+                    <button autofocus data-focusable ng-repeat="child in children" ng-click="selectNode(child)" ng-bind="child.value" class="btn" ng-class="{'btn-success': child.selected, 'btn-default': !child.selected}"></button>
+                </div>
+            </ng-switch>
+        </div>
+    </div>
+    <div class="next-decision-container"></div>
+</div>

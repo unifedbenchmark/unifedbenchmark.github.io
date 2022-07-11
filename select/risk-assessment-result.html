@@ -1,0 +1,18 @@
+<div ng-if="result">
+    <label>Suggestion</label>
+    <div class="alert" ng-class="{ 'alert-success': result.risk === 'LOW', 'alert-warning': result.risk === 'MODERATE', 'alert-danger': result.risk === 'HIGH'}" role="alert">
+        <div class="text-center">
+            <span ng-if="result.description" ng-bind-html="result.description"></span>        
+    
+        </div>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+    
+    <label>Description of this framework</label>
+    <div class="description_info">
+        <p class="explanation" ng-bind-html="result.explanation"></p>
+    </div>
+</div>
