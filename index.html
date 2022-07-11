@@ -51,7 +51,7 @@
 </head>
 
 
-<body ng-app="MainModule" ng-controller="MainController as ctrl">
+<body>
   <nav class="navbar navbar-expand-md">
       <div class="container">
         <a class="navbar-brand" href="./index.html"
@@ -154,17 +154,19 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
       </div>
     </div>
 
-    <div class="text-center">
-      <button ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
+    <div ng-app="MainModule" ng-controller="MainController as ctrl">
+      <div class="text-center">
+        <button class="btn btn-primary" ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
+      </div>
+      
+      <br>
+      <br>
+      <br>
+      <br>
+      
+  
+      <decision-tree-result result="ctrl.result"></decision-tree-result>
     </div>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    
- 
-    <decision-tree-result result="ctrl.result"></decision-tree-result>
     <!-- End of the Decision Tree -->
 
 
