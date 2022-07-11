@@ -37,17 +37,6 @@
 
   <link rel="stylesheet" href="./css/main.css" />
   <script src="https://d3js.org/d3.v4.js"></script>
-
-  <!-- Decision Tree Part -->
-  <script data-require="angular.js@1.5.6" data-semver="1.5.6" src="https://code.angularjs.org/1.5.6/angular.min.js"></script>
-  <script data-require="sanitize@1.4.8" data-semver="1.4.8" src="https://code.angularjs.org/1.4.8/angular-sanitize.js"></script>
-
-  <script data-require="ui-select@0.18.1" data-semver="0.18.1" src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.18.1/select.js"></script>
-  <link data-require="ui-select@0.18.1" data-semver="0.18.1" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.18.1/select.css" />
-
-  <script src="select/decision-tree.js"></script>
-  <script src="select/script.js"></script>
-  <!-- End of the Decision Tree -->
 </head>
 
 
@@ -66,6 +55,9 @@
         </button>
         <div class="collapse navbar-collapse" id="main-navigation">
           <ul class="navbar-nav">
+            <li>
+              <a class="nav-link" href="https://unifedbenchmark.github.io/select">Select framework !</a>
+            </li>
             <li>
               <!-- <a class="nav-link" href="https://openreview.net/pdf?id=KYcoRmqdY-">Paper</a> -->
               <a class="nav-link" href="https://unifedbenchmark.github.io/paper/unifed.pdf">Paper</a>
@@ -144,31 +136,6 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
         </tr>
        <tr></tr>
     </table>
-
-    <!-- Decision Tree Part -->
-    <div id="leaderboard" class="container button-list">
-      <div class="heading">
-        <u>
-          Choose the best framework for you
-        </u>
-      </div>
-    </div>
-
-    <div ng-app="MainModule" ng-controller="MainController as ctrl">
-      <div class="text-center">
-        <button class="btn btn-primary" ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
-      </div>
-      
-      <br>
-      <br>
-      <br>
-      <br>
-      
-  
-      <decision-tree-result result="ctrl.result"></decision-tree-result>
-    </div>
-    <!-- End of the Decision Tree -->
-
 
     <div id="leaderboard" class="container button-list">
       <div class="heading">

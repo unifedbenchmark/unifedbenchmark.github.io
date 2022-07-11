@@ -475,21 +475,3 @@ footer {
     font-size: 16px;
     width: 100%;
 }
-
-/* Decision Tree Part */
-
-.text-center {
-  text-align: center;
-}
-.description_info {
-    background-color: #D9EEE1;
-    border-left: none;
-    padding: 32px;
-    margin: 24px;
-    margin-left: 12px;
-    margin-right: 12px;
-}
-.explanation {
-  font-style: italic;
-}
-
