@@ -21,7 +21,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
 
-  <body ng-app="MainModule" ng-controller="MainController as ctrl">
+  <body ng-app="MainModule" ng-controller="MainController as ctrl" background="image/background.png">
 
     <!--<ui-select ng-model="ctrl.selectedDecisionTreeMode" theme="bootstrap" style="width: 250px;">-->
     <!--  <ui-select-match allow-clear="false" placeholder=""><span ng-bind="$select.selected.label"></span></ui-select-match>-->
@@ -29,28 +29,29 @@
     <!--    <div ng-bind-html="mode.label | highlight: $select.search"></div>-->
     <!--  </ui-select-choices>-->
     <!--</ui-select>-->
-    <div class = "BackGround">
-      <div class="text-center">
-        <button class="btn btn-primary" ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
-      </div>
-      
-      <br>
-      <br>
-      <br>
-      <br>
-      
-  
-      <decision-tree-result result="ctrl.result"></decision-tree-result>
 
-      <br>
-      <br>
-      <br>
-      <br>
-
-      <a href="https://unifedbenchmark.github.io/">
-        <button class="btn btn-primary">Return to the Homepage</button>
-      </a>
+    <div class="text-center">
+      <button class="btn btn-primary" ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
     </div>
+    
+    <br>
+    <br>
+    <br>
+    <br>
+    
+
+    <decision-tree-result result="ctrl.result"></decision-tree-result>
+    <img src="image/figure_1.png" height="300">
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <a href="https://unifedbenchmark.github.io/">
+      <button class="btn btn-primary">Return to the Homepage</button>
+    </a>
+
   </body>
 
 </html>
