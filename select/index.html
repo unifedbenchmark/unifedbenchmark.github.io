@@ -29,28 +29,28 @@
     <!--    <div ng-bind-html="mode.label | highlight: $select.search"></div>-->
     <!--  </ui-select-choices>-->
     <!--</ui-select>-->
-   
-    <div class="text-center">
-      <button class="btn btn-primary" ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
+    <div class = "BackGround">
+      <div class="text-center">
+        <button class="btn btn-primary" ng-click="ctrl.openDecisionTreeWizard()">Find the most matching FL framework for your workload</button>
+      </div>
+      
+      <br>
+      <br>
+      <br>
+      <br>
+      
+  
+      <decision-tree-result result="ctrl.result"></decision-tree-result>
+
+      <br>
+      <br>
+      <br>
+      <br>
+
+      <a href="https://unifedbenchmark.github.io/">
+        <button class="btn btn-primary">Return to the Homepage</button>
+      </a>
     </div>
-    
-    <br>
-    <br>
-    <br>
-    <br>
-    
- 
-    <decision-tree-result result="ctrl.result"></decision-tree-result>
-
-    <br>
-    <br>
-    <br>
-    <br>
-
-    <a href="https://unifedbenchmark.github.io/">
-      <button class="btn btn-primary">Return to the Homepage</button>
-    </a>
-
   </body>
 
 </html>

@@ -92,3 +92,8 @@ button {
   transition: box-shadow 0.25s;
   color: white;
 }
+
+.BackGround{
+  background-image: url(image/figure_1.png);
+  opacity: 0.5;
+}
