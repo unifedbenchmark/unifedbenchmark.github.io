@@ -1017,6 +1017,7 @@ mainModule.controller('MainController', ['$decisionTree', function($decisionTree
     );
   };
 
+  vm.openDecisionTreeWizard();
 }]);
 
 mainModule.directive('decisionTreeResult', function () {
