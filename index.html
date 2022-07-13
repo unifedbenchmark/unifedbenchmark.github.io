@@ -143,7 +143,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
     </div>
 
     <div class="text-center">
-      <img src="demo/tree.svg" style="max-height:500px;"/>
+      <div class="tree"><img src="demo/tree.svg" style="max-height:500px;"/></div>
       <a href="https://unifedbenchmark.github.io/select">
         <button class = "bn29">
           Go to choose your framework!
@@ -261,5 +261,18 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
     $("#highway-fast-v0_GRe-mean").load("./highway-fast-v0/GRe-mean.html");
     $("#highway-fast-v0_GRe-median").load("./highway-fast-v0/GRe-median.html");
     $("#highway-fast-v0_LoRe").load("./highway-fast-v0/LoRe.html");
+  </script>
+  <script>
+    const zoomScreen = document.querySelector(".tree");
+    let zoom = 1;
+    const zoomingSpeed = 0.1;
+
+    document.addEventListener("wheel", (e)=> {
+        if (e.deltaY > 0) {
+            zoomScreen.style.transform = `scale(${(zoom += zoomingSpeed)})`;
+        } else {
+            zoomScreen.style.transform = `scale(${(zoom -= zoomingSpeed)})`;
+        }
+    })
   </script>
 </body>
