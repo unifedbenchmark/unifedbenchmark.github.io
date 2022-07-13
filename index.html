@@ -49,15 +49,15 @@
       position: absolute;
       border: 1px solid #d4d4d4;
       /*set the size of the lens:*/
-      width: 40px;
-      height: 40px;
+      width: 250px;
+      height: 100px;
     }
 
     .img-zoom-result {
       border: 1px solid #d4d4d4;
       /*set the size of the result div:*/
-      width: 300px;
-      height: 300px;
+      width: 1250px;
+      height: 500px;
     }
   </style>
   <script>
@@ -223,8 +223,11 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
     </div>
 
     <div class="text-center">
-      <img id="tree" src="demo/tree.svg" style="max-height:500px;"/>
-      <div id="zoomed" class="img-zoom-result"></div>
+      <div class="img-zoom-container">
+        <img id="tree" src="demo/tree.svg" style="max-height:500px;"/>
+        <div id="zoomed" class="img-zoom-result"></div>
+      </div>
+      
       <a href="https://unifedbenchmark.github.io/select">
         <button class = "bn29">
           Go to choose your framework!
