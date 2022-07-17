@@ -2,7 +2,7 @@
 
 <head>
   <!-- Global site tag (gtag.js) - Google Analytics -->
-  <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-178132094-1"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-178132094-1"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() {
@@ -11,7 +11,7 @@
     gtag("js", new Date());
 
     gtag("config", "UA-178132094-1");
-  </script> -->
+  </script>
 
   <meta charset="UTF-8" />
   <!--  <meta name="viewport" content="width=device-width, initial-scale=1" />-->
@@ -35,16 +35,102 @@
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.foundation.min.js"></script>
   <!-- <script type="text/javascript" src="/static/js/jquery.min.js"></script> -->
 
-  <link rel="stylesheet" href="./css/main.css" />
+  <link rel="stylesheet" href="./../css/main.css" />
   <script src="https://d3js.org/d3.v4.js"></script>
+
+  <script>
+    function choice() {
+      var scenario = document.getElementById("scenario").value;
+      window.location.href = "#"+scenario+"_heading";
+    }
+  </script>
   
+  <style>
+    * {box-sizing: border-box;}
+
+    .img-zoom-container {
+      position: relative;
+    }
+
+    .img-zoom-lens {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      /*set the size of the lens:*/
+      width: 400px;
+      height: 100px;
+    }
+
+    .img-zoom-result {
+      border: 1px solid #d4d4d4;
+      /*set the size of the result div:*/
+      width: 1200px;
+      height: 300px;
+    }
+  </style>
+  <script>
+    function imageZoom(imgID, resultID) {
+      var img, lens, result, cx, cy;
+      img = document.getElementById(imgID);
+      result = document.getElementById(resultID);
+      /*create lens:*/
+      lens = document.createElement("DIV");
+      lens.setAttribute("class", "img-zoom-lens");
+      /*insert lens:*/
+      img.parentElement.insertBefore(lens, img);
+      /*calculate the ratio between result DIV and lens:*/
+      cx = result.offsetWidth / lens.offsetWidth;
+      cy = result.offsetHeight / lens.offsetHeight;
+      /*set background properties for the result DIV:*/
+      result.style.backgroundImage = "url('" + img.src + "')";
+      result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+      /*execute a function when someone moves the cursor over the image, or the lens:*/
+      lens.addEventListener("mousemove", moveLens);
+      img.addEventListener("mousemove", moveLens);
+      /*and also for touch screens:*/
+      lens.addEventListener("touchmove", moveLens);
+      img.addEventListener("touchmove", moveLens);
+      function moveLens(e) {
+        var pos, x, y;
+        /*prevent any other actions that may occur when moving over the image:*/
+        e.preventDefault();
+        /*get the cursor's x and y positions:*/
+        pos = getCursorPos(e);
+        /*calculate the position of the lens:*/
+        x = pos.x - (lens.offsetWidth / 2);
+        y = pos.y - (lens.offsetHeight / 2);
+        /*prevent the lens from being positioned outside the image:*/
+        if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
+        if (x < 0) {x = 0;}
+        if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
+        if (y < 0) {y = 0;}
+        /*set the position of the lens:*/
+        lens.style.left = x + "px";
+        lens.style.top = y + "px";
+        /*display what the lens "sees":*/
+        result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+      }
+      function getCursorPos(e) {
+        var a, x = 0, y = 0;
+        e = e || window.event;
+        /*get the x and y positions of the image:*/
+        a = img.getBoundingClientRect();
+        /*calculate the cursor's x and y coordinates, relative to the image:*/
+        x = e.pageX - a.left;
+        y = e.pageY - a.top;
+        /*consider any page scrolling:*/
+        x = x - window.pageXOffset;
+        y = y - window.pageYOffset;
+        return {x : x, y : y};
+      }
+    }
+  </script>
 </head>
 
 
 <body>
   <nav class="navbar navbar-expand-md">
       <div class="container">
-        <a class="navbar-brand" href="./index.html"
+        <a class="navbar-brand" href="../index.html"
           >UniFed</a>
         <button
           class="navbar-toggler navbar-light"
@@ -58,7 +144,7 @@
           <ul class="navbar-nav">
             <li>
               <!-- <a class="nav-link" href="https://openreview.net/pdf?id=KYcoRmqdY-">Paper</a> -->
-              <a class="nav-link" href="https://unifedbenchmark.github.io/paper/unifed.pdf">Paper</a>
+              <a class="nav-link" href="https://unifedbenchmark.github.io/paper/unifed.pdf">Paper</a
             </li>
             <li>
               <a class="nav-link" href="https://github.com/AI-secure/FLBenchmark-toolkit">GitHub</a>
@@ -67,12 +153,12 @@
               <!-- <a class="nav-link" href="#faq"
                 >FAQ</a
               > -->
-              <a class="nav-link" href="FAQ/index.html"
+              <a class="nav-link" href="../FAQ/index.html"
                 >FAQ</a
               >
             </li>
             <li>
-              <a class="nav-link" href="leaderboard/index.html">UniFed Leaderboard</a>
+              <a class="nav-link" href="../index.html">UniFed Introduction</a>
             </li>
             <!-- <li> -->
               <!-- <a class="nav-link" href="#contribute">Contribute</a> -->
@@ -92,12 +178,10 @@
   <!-- <hr class="toprule" /> -->
   <header>
     <div class="header-block container">
-      <div class="logo">
-        <!-- <img src="./images/new_logo.png" alt="logo" /> -->
-      </div>
-      <div class="title">UniFed</div>
+      <!-- <div class="logo"><img src="./../images/new_logo.png" alt="logo" /></div> -->
+      <div class="title">UniFed-leaderboard</div>
       <div class="description">
-        A Benchmark for Federated Learning Frameworks
+        A Benchmark for Federated Learning Frameworks 
       </div>
     </div>
   </header>
@@ -107,160 +191,1369 @@
     <section id="introduction">
       <div class="overview">
         <p class="doublealign">
-          The goal of <b>UniFed</b> is to systematically evaluate the existing open-source FL frameworks. 
-          With 15 evaluation scenarios, we present both qualitative and quantitative evaluation results of nine existing popular open-sourced FL frameworks, from the perspectives of functionality, usability, and system performance. We also provide
-          suggestions on framework selection based on the benchmark conclusions and point out future improvement directions.
+          In <b>UniFed leaderboard</b>, with <b>15</b> evaluation scenarios, we present both qualitative and quantitative evaluation results of  <b>9</b> existing popular open-sourced FL frameworks, from the
+         perspectives of  <b>functionality, usability, and system performance</b>.
+          
 <!-- Please find more details in our paper <a href="https://openreview.net/pdf?id=KYcoRmqdY-">here</a>. -->
 Please find more details in our paper <a href="https://unifedbenchmark.github.io/paper/unifed.pdf">here</a>.
         </p>
       </div>
     </section>
 
-
-    <div id="leaderboard" class="container button-list">
+    <div id="overall_leaderboard" class="container button-list">
       <div class="heading">
-        <u>
-          Benchmark Design
-        </u>
+      <u>
+        Evaluation Scenarios
+      </u>
+      </div>
+      <p>UniFed borrow 15 datasets from existing works to cover different FL
+        settings, modalities, task types, and workload sizes.</p>
+        
+      <div>
+        <style type="text/css">
+          .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+          .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+            font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+          .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+            font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+          .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+          .tg .tg-uzvj{border-color:#aabcfe;font-weight:bold;text-align:center;vertical-align:middle}
+          </style>
+          <!-- <div class="description">
+            Horizontal FL
+          </div> -->
+          <table class="tg">
+          <thead>
+            <tr>
+              <th class="tg-9wq8" colspan="2">Setting</th>
+              <th class="tg-9wq8" rowspan="1">Scenario name</th>
+              <th class="tg-9wq8" rowspan="1">Modality</th>
+              <th class="tg-9wq8" rowspan="1">Task type</th>
+              <th class="tg-9wq8" rowspan="1">Performance metrics</th>
+              <th class="tg-9wq8" rowspan="1">Client number</th>
+              <th class="tg-9wq8" rowspan="1">Sample number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="tg-highlight" rowspan="8">Horizontal FL
+              </td>
+              <td class="tg-9wq8" rowspan="3">cross-device
+                </td>
+              <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/">celeba</a></td>
+              <td class="tg-9wq8">Image</td>
+              <td class="tg-9wq8">Binary Classification
+                (Smiling vs. Not smiling)</td>
+              <td class="tg-9wq8">Accuracy</td>
+              <td class="tg-9wq8">894</td>
+              <td class="tg-9wq8"> 20,028</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/">femnist</a></td>
+              <td class="tg-9wq8">Image</td>
+              <td class="tg-9wq8">Multiclass Classification
+                (62 classes)</td>
+              <td class="tg-9wq8">Accuracy</td>
+              <td class="tg-9wq8">178</td>
+              <td class="tg-9wq8">40,203</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/"> reddit </a></td>
+              <td class="tg-9wq8"> Text</td>
+              <td class="tg-9wq8">Next-word Prediction</td>
+              <td class="tg-9wq8"> Accuracy</td>
+              <td class="tg-9wq8"> 813</td>
+              <td class="tg-9wq8">27,738</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8" rowspan="5">cross-silo
+                </td>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> breast_horizontal </a></td>
+              <td class="tg-9wq8">Medical</td>
+              <td class="tg-9wq8">Binary Classification</td>
+              <td class="tg-9wq8">AUC</td>
+              <td class="tg-9wq8">2</td>
+              <td class="tg-9wq8">569</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_horizontal </a></td>
+              <td class="tg-9wq8">Tabular</td>
+              <td class="tg-9wq8">Binary Classification</td>
+              <td class="tg-9wq8">AUC</td>
+              <td class="tg-9wq8">2</td>
+              <td class="tg-9wq8"> 22,000</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_horizontal </a></td>
+              <td class="tg-9wq8">Tabular</td>
+              <td class="tg-9wq8">Binary Classification</td>
+              <td class="tg-9wq8">AUC</td>
+              <td class="tg-9wq8">2</td>
+              <td class="tg-9wq8">150,000</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> student_horizontal </a></td>
+              <td class="tg-9wq8">Tabular</td>
+              <td class="tg-9wq8">Regression
+                (Grade Estimation)</td>
+              <td class="tg-9wq8">MSE</td>
+              <td class="tg-9wq8">2</td>
+              <td class="tg-9wq8">395</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> vehicle_scale_horizontal </a></td>
+              <td class="tg-9wq8">Image</td>
+              <td class="tg-9wq8">Multiclass Classification
+                (4 classes)</td>
+              <td class="tg-9wq8">Accuracy</td>
+              <td class="tg-9wq8">2</td>
+              <td class="tg-9wq8"> 846</td>
+            </tr>
+           
+          </tbody>
+
+          <thead>
+            <tr>
+              <th class="tg-9wq8" colspan="2">Setting</th>
+              <th class="tg-9wq8" rowspan="1">Scenario name</th>
+              <th class="tg-9wq8" rowspan="1">Modality</th>
+              <th class="tg-9wq8" rowspan="1">Task type</th>
+              <th class="tg-9wq8" rowspan="1">Performance metrics</th>
+              <th class="tg-9wq8" colspan="2">Vertical split details</th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+             <td class="tg-highlight" rowspan="7"  colspan="2" > Vertical <br> FL
+                </td> 
+              
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> breast_vertical </a></td>
+              <td class="tg-9wq8">Medical</td>
+              <td class="tg-9wq8">Binary Classification</td>
+              <td class="tg-9wq8">AUC</td>
+              <td class="tg-9wq8">A party: 10 features 1 label
+               </td>
+              <td class="tg-9wq8">B party: 20 features</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_vertical </a></td>
+              <td class="tg-9wq8">Tabular</td>
+              <td class="tg-9wq8">Binary Classification</td>
+              <td class="tg-9wq8">AUC</td>
+              <td class="tg-9wq8">A party: 13 features 1 label
+              </td>
+             <td class="tg-9wq8">B party: 10 features</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> dvisits_vertical </a></td>
+              <td class="tg-9wq8"> Tabular</td>
+              <td class="tg-9wq8"> Regression (Number of
+                consultations Estimation) </td>
+              <td class="tg-9wq8"> MSE</td>
+              <td class="tg-9wq8">A party: 3 features 1 label
+              </td>
+             <td class="tg-9wq8">B party: 9 features</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_vertical </a></td>
+              <td class="tg-9wq8">Tabular</td>
+              <td class="tg-9wq8">Binary Classification</td>
+              <td class="tg-9wq8">AUC</td>
+              <td class="tg-9wq8">A party: 5 features 1 label
+              </td>
+             <td class="tg-9wq8">B party: 5 features</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> motor_vertical </a></td>
+              <td class="tg-9wq8">Sensor data</td>
+              <td class="tg-9wq8">Regression
+                (Temperature Estimation)</td>
+              <td class="tg-9wq8">MSE</td>
+              <td class="tg-9wq8">A party: 4 features 1 label
+              </td>
+             <td class="tg-9wq8">B party: 7 features</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> student_vertical </a></td>
+              <td class="tg-9wq8">Tabular</td>
+              <td class="tg-9wq8">Regression
+                (Grade Estimation)</td>
+              <td class="tg-9wq8">MSE</td>
+              <td class="tg-9wq8">A party: 6 features 1 label
+              </td>
+             <td class="tg-9wq8">B party: 7 features</td>
+            </tr>
+            <tr>
+              <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> vehicle_scale_vertical </a></td>
+              <td class="tg-9wq8">Image</td>
+              <td class="tg-9wq8">Multiclass Classification
+                (4 classes)</td>
+              <td class="tg-9wq8">Accuracy</td>
+              <td class="tg-9wq8">A party: 9 features 1 label
+              </td>
+             <td class="tg-9wq8">B party: 9 features</td>
+            </tr>
+           
+          </tbody>
+          </table>
+      
       </div>
     </div>
-    <table>
-        <tr>
-            <td ><center><img  src="images/workflow-design.png" style="max-height:300px;"></center></td>
-        </tr>
-        <tr></tr>
-        <tr>
-          <td ><center>Design of the Benchmark Workflow</center></td>
-        </tr>
-       <tr></tr>
-    </table>
 
-    <div id="leaderboard" class="container button-list">
+    <div id="leaderboard_selection" class="container button-list">
       <div class="heading">
         <u>
-          Choose the Best FL Framework for You
+          Available Leaderboard
         </u>
       </div>
-    </div>
-    <br>
-    <div class="text-center">
-      <a href="https://unifedbenchmark.github.io/select">
-        <button class = "bn29">
-          Go to choose the framework for your scenario!
-        </button>
-      </a>
+      <div style="display: flex">
+        <label>Metrics: 
+          <select id="scenario" style="width:200px; margin: 10px">
+            <option value="scenario_1">Functionality support</option>
+            <option value="scenario_2">Usability feature</option>
+            <option value="scenario_3">FedAvg with different models on Horizontal FL</option>
+            <option value="scenario_4">Same model with different FL algorithm implementations</option>
+            <option value="scenario_5">Best algorithm and model combinations</option>
+            <option value="scenario_6">System performance - training time</option>
+            <option value="scenario_7">System performance - communication cost</option>
+            <option value="scenario_8">System performance - peak memory usage</option>
+          </select>
+        </label>
 
-      <br>
-      <br>
+        <button type="button" class="button" onclick="choice()" style="width:150px; margin: 10px; height: 40px;">Evaluate!</button>
+      </div>
 
-      <a href="https://unifedbenchmark.github.io/leaderboard/index.html#scenario_1_heading">
-        <!-- <button class = "bn33"> -->
-          <button class = "bn29">
-          Comparison of different frameworks
-        </button>
-      </a>
-    </div>
+      <div id="scenario_1_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: Functionality support
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+            <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-9wq8" rowspan="2" colspan="2">Functionality</th>
+                <th class="tg-9wq8" colspan="4">All-in-one frameworks</th>
+                <th class="tg-9wq8" colspan="4">Horizontal-only frameworks</th>
+                <th class="tg-9wq8" colspan="2">Specialized frameworks</th>
+              </tr>
+              <tr>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/SymbioticLab/FedScale">FedScale</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-highlight" rowspan="3">Model support <br> for Horizontal FL</td>
+                <td class="tg-9wq8">Regression</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#x2718;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Neural network</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#x2718;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Tree-based model</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-highlight" rowspan="3">Model support <br> for Vertical FL</td>
+                <td class="tg-9wq8">Regression</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#9711;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Neural network</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#9711;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Tree-based model</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-highlight" rowspan="3">Deployment support</td>
+                <td class="tg-9wq8">Single-host simulation</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8"> Multi-host deployment (less than 16 hosts)</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#9711;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Cross-device deployment (more than 100 host)</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#9711;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
 
-    <div id="leaderboard" class="container button-list">
-      <div class="heading">
-        <u>
-          Available Open-source Frameworks
-        </u>
+              <tr>
+                <td class="tg-highlight" rowspan="3">Privacy protection <br> against semi-honest server</td>
+                <td class="tg-9wq8">Does not require a 3rd party aggregator (vertical)</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8"> Aggregator does not learn model parameters (arbitar scenario) </td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Aggregator does not learn individual model gradient (secagg)</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-highlight" rowspan="2">Privacy protection <br>  against semi-honest peer clients</td>
+                <td class="tg-9wq8">Clients do not learn anything about model parameters (vertical)</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8"> Clients do not learn gradients from other clients (vertical)</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-highlight" rowspan="1">Privacy protection <br>  in the final model</td>
+                <td class="tg-9wq8">Support training with central DP (DP-SGD/gradient edits)</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+
+
+
+            </tbody>
+            </table>
+            <p> &#9711; indicate a claimed support for certain
+              functionalities that are missing or cannot run in the open-source implementation.</p>
+             
+        </div>
+      </div>
+
+      <div id="scenario_2_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: Usability feature
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            .tg .tg-highlight{border-color:#aabcfe;text-align:center;vertical-align:middle;color:#039;}
+            </style>
+            <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-9wq8" rowspan="2" colspan="2">Functionality</th>
+                <th class="tg-9wq8" colspan="4">All-in-one frameworks</th>
+                <th class="tg-9wq8" colspan="3">Horizontal-only frameworks</th>
+                <th class="tg-9wq8" colspan="2">Specialized frameworks</th>
+              </tr>
+              <tr>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-highlight" rowspan="3">Documentation</td>
+                <td class="tg-9wq8">Detailed tutorial</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Code example</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">API documentation</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-highlight" rowspan="2">Engineering</td>
+                <td class="tg-9wq8">Native test & benchmark</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">GPU support</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+              </tr>
+              <tr>
+                <td class="tg-highlight" rowspan="3">Built-in ML building block</td>
+                <td class="tg-9wq8">CNN</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">RNN</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Rich Optimizers</td>
+                <td class="tg-c3ow">Customized</td>
+                <td class="tg-c3ow">PyTorch</td>
+                <td class="tg-c3ow">PaddlePaddle</td>
+                <td class="tg-c3ow">TensorFlow</td>
+                <td class="tg-c3ow">TensorFlow</td>
+                <td class="tg-c3ow">PyTorch, TensorFlow,   Jax, etc</td>
+                <td class="tg-c3ow">PyTorch</td>
+                <td class="tg-c3ow"> Only SGD</td>
+                <td class="tg-c3ow">N/A</td>
+              </tr>
+
+            </tbody>
+            </table>
+             
+        </div>
+      </div>
+
+      <div id="scenario_3_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: FedAvg with different models on Horizontal FL
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+            <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-9wq8" rowspan="1" colspan="1">Setting</th>
+                <th class="tg-9wq8" colspan="1">Model</th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-9wq8" rowspan="4"><a class="link-simple" href="https://leaf.cmu.edu/">femnist</a> <br>
+                  cross-device
+                  (Accuracy ↑)</td>
+                <td class="tg-9wq8">logistic_regression</td>
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">0.083</td> 
+                <td class="tg-c3ow">0.053</td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 0.058 </td>
+                <td class="tg-c3ow">0.036 </td>
+                <td class="tg-c3ow"> 0.072</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">mlp_128</td>
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">0.652</td> 
+                <td class="tg-c3ow">0.591</td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">  0.644 </td>
+                <td class="tg-c3ow">  0.663 </td>
+                <td class="tg-c3ow"> 0.641 </td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">mlp_128_128_128</td>
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">0.701 </td> 
+                <td class="tg-c3ow">0.671 </td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">  0.722 </td>
+                <td class="tg-c3ow"> 0.707 </td>
+                <td class="tg-c3ow"> 0.697 </td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">lenet</td>
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 0.822 </td> 
+                <td class="tg-c3ow"> 0.792</td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 0.822</td>
+                <td class="tg-c3ow">  0.819 </td>
+                <td class="tg-c3ow"> 0.820 </td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8" rowspan="3"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_horizontal </a> <br>
+                  cross-silo
+                  (AUC ↑)</td>
+                <td class="tg-9wq8">logistic_regression</td>
+                <td class="tg-c3ow">0.693</td> 
+                <td class="tg-c3ow">0.788</td> 
+                <td class="tg-c3ow">0.788</td> 
+                <td class="tg-c3ow">0.790</td> 
+                <td class="tg-c3ow">0.790 </td>
+                <td class="tg-c3ow">0.795 </td>
+                <td class="tg-c3ow"> 0.790</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">mlp_128</td>
+                <td class="tg-c3ow">0.830 </td> 
+                <td class="tg-c3ow">0.832 </td> 
+                <td class="tg-c3ow">0.828 </td> 
+                <td class="tg-c3ow">0.834</td> 
+                <td class="tg-c3ow"> 0.832 </td>
+                <td class="tg-c3ow">  0.831 </td>
+                <td class="tg-c3ow">0.833 </td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">mlp_128_128_128</td>
+                <td class="tg-c3ow"> 0.831 </td> 
+                <td class="tg-c3ow">0.834 </td> 
+                <td class="tg-c3ow">0.827  </td> 
+                <td class="tg-c3ow"> 0.835 </td> 
+                <td class="tg-c3ow"> 0.832 </td>
+                <td class="tg-c3ow"> 0.834 </td>
+                <td class="tg-c3ow"> 0.834 </td>
+              </tr>
+            
+            </tbody>
+            </table>
+            <p>FATE and Fedlearner
+              do not support cross-device setting and are excluded from the comparison.</p>
+
+        </div>
+      </div>
+
+      <div id="scenario_4_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: Same model with different FL algorithm implementations
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+            <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-9wq8" rowspan="1" colspan="1">Setting</th>
+                <th class="tg-9wq8" colspan="1">Model</th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-9wq8" rowspan="3"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_vertical </a> <br>
+                  (AUC ↑)</td>
+                <td class="tg-9wq8">Regression<br> (logistic_regression) </td>
+                <td class="tg-c3ow">0.717 <br> HE-based  </td> 
+                <td class="tg-c3ow">0.650 <br> HE-based  </td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 0.708<br> 
+                  sMPC-based  </td>
+                <td class="tg-c3ow">/</td>
+       
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Neural network <br>  
+                  (mlp_128_128_128)  </td>
+                <td class="tg-c3ow">0.737 (1 epoch)  <br> HE-based  </td> 
+                <td class="tg-c3ow"> /  </td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 0.789<br> 
+                  sMPC-based  </td>
+                <td class="tg-c3ow">/</td>
+              </tr>
+              <tr>
+                <td class="tg-9wq8">Tree-based model <br>  
+                  (gbdt_64_64_6)  </td>
+                <td class="tg-c3ow">0.820
+                     <br> SecureBoost  </td> 
+                <td class="tg-c3ow"> /  </td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 0.819  <br>  SecureBoost   </td> 
+                <td class="tg-c3ow"> / </td>
+                <td class="tg-c3ow"> 0.817  <br> 
+                  SecureBoost  </td>
+              </tr>
+
+              <tr>
+                <td class="tg-9wq8" rowspan="3"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_horizontal </a> <br>
+                  (AUC ↑)</td>
+                <td class="tg-9wq8">Tree-based model <br>  
+                  (gbdt_64_64_6)  </td>
+                <td class="tg-c3ow">0.861 
+                     <br> HistSecAgg  </td> 
+                <td class="tg-c3ow"> /  </td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> /  </td> 
+                <td class="tg-c3ow"> / </td>
+                <td class="tg-c3ow"> 0.861  <br> 
+                  HistSecAgg  </td>
+              </tr>
+            
+            </tbody>
+            </table>
+           
+        </div>
+      </div>
+
+      <div id="scenario_5_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: Best algorithm and model combinations
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+             <table class="tg">
+              <thead>
+                <tr>
+                  <th class="tg-9wq8" rowspan="2">Setting</th>
+                  <th class="tg-9wq8" rowspan="2">Name</th>
+                  <th class="tg-9wq8" colspan="2">1st</th>
+                  <th class="tg-9wq8" colspan="2">2nd</th>
+                  <th class="tg-9wq8" colspan="2">3rd</th>
+                </tr>
+                <tr>
+                  <th class="tg-9wq8">algorithm & model</th>
+                  <th class="tg-9wq8">performance</th>
+                  <th class="tg-9wq8">algorithm & model</th>
+                  <th class="tg-9wq8">performance</th>
+                  <th class="tg-9wq8">algorithm & model</th>
+                  <th class="tg-9wq8">performance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tg-highlight" rowspan="3">cross-device <br>
+                    horizontal</td>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/">celeba</a><br>
+                    (Accuracy ↑)</td>
+                  <td class="tg-c3ow">FedAvg <br>leaf_cnn </td>
+                  <td class="tg-c3ow">90.19%</td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    resnet_18</td>
+                  <td class="tg-c3ow">88.99%</td>
+                  <td class="tg-c3ow"> </td>
+                  <td class="tg-c3ow"></td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/">femnist</a><br>
+                    (Accuracy ↑)</td>
+                  <td class="tg-c3ow">FedAvg <br>lenet </td>
+                  <td class="tg-c3ow">82.23% </td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">72.24%</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
+                  <td class="tg-c3ow">66.33%</td>
+            
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/"> reddit </a><br>
+                    (Accuracy ↑)</td>
+                  <td class="tg-c3ow">FedAvg <br>lstm </td>
+                  <td class="tg-c3ow">13.36% </td>
+                  <td class="tg-c3ow"> </td>
+                  <td class="tg-c3ow"></td>
+                  <td class="tg-c3ow"> </td>
+                  <td class="tg-c3ow"></td>
+                </tr>
+
+                <tr>
+                  <td class="tg-highlight" rowspan="5">cross-silo <br>
+                    horizontal</td>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> breast_horizontal </a><br>
+                    (AUC ↑)</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">98.86%</td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    logistic_regression</td>
+                  <td class="tg-c3ow">98.70%</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
+                  <td class="tg-c3ow">98.54%</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_horizontal </a><br>
+                    (AUC ↑)</td>
+                  <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">78.46%</td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">77.70%</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
+                  <td class="tg-c3ow">77.21%</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_horizontal </a><br>
+                    (AUC ↑)</td>
+                  <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">86.10%</td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">83.45% </td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
+                  <td class="tg-c3ow">83.38%</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> student_horizontal </a><br>
+                    (MSE ↓)</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">21.04</td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    mlp_128</td>
+                  <td class="tg-c3ow">21.99 </td>
+                  <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">22.79</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> vehicle_scale_horizontal </a><br>
+                    (Accuracy ↑)</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">100.0%</td>
+                  <td class="tg-c3ow">FedAvg<br>
+                    mlp_128</td>
+                  <td class="tg-c3ow">100.0% </td>
+                  <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">99.64%</td>
+                </tr>
+
+
+                <tr>
+                  <td class="tg-highlight" rowspan="7">vertical</td>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> breast_vertical </a><br>
+                    (AUC ↑)</td>
+                  <td class="tg-c3ow">SecureBoost <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">100.0%</td>
+                  <td class="tg-c3ow">sMPC-based<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">100.0%</td>
+                  <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                  <td class="tg-c3ow">99.97%</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_vertical </a><br>
+                    (AUC ↑)</td>
+                  <td class="tg-c3ow">SecureBoost <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">81.99%</td>
+                  <td class="tg-c3ow">sMPC-based<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">78.89%</td>
+                  <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                  <td class="tg-c3ow">77.87%</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> dvisits_vertical </a><br>
+                    (MSE ↓)</td>
+                  <td class="tg-c3ow">SecureBoost <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">0.32</td>
+                  <td class="tg-c3ow">sMPC-based<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">0.57</td>
+                  <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                  <td class="tg-c3ow">0.60</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_vertical </a><br>
+                    (AUC ↑)</td>
+                    <td class="tg-c3ow">SecureBoost <br>gbdt_64_64_6 </td>
+                    <td class="tg-c3ow">86.79%</td>
+                    <td class="tg-c3ow">sMPC-based<br>
+                      mlp_128_128_128</td>
+                    <td class="tg-c3ow">83.38%</td>
+                    <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                    <td class="tg-c3ow">82.79%</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> motor_vertical </a><br>
+                    (MSE ↓)</td>
+                    <td class="tg-c3ow">sMPC-based <br>mlp_128_128_128 </td>
+                    <td class="tg-c3ow">3.66E-4</td>
+                    <td class="tg-c3ow">SecureBoost<br>
+                      gbdt_64_64_6</td>
+                    <td class="tg-c3ow">3.64E-3</td>
+                    <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                    <td class="tg-c3ow">9.98E-03</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> student_vertical </a><br>
+                    (MSE ↓)</td>
+                    <td class="tg-c3ow">SecureBoost <br>gbdt_64_64_6 </td>
+                    <td class="tg-c3ow">3.26</td>
+                    <td class="tg-c3ow">sMPC-based<br>
+                      mlp_128_128_128</td>
+                    <td class="tg-c3ow">11.03</td>
+                    <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                    <td class="tg-c3ow">12.43</td>
+                </tr>
+                <tr>
+                  <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> vehicle_scale_vertical </a><br>
+                    (Accuracy ↑)</td>
+                  <td class="tg-c3ow">SecureBoost <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">99.17%</td>
+                  <td class="tg-c3ow">sMPC-based<br>
+                    mlp_128_128_128</td>
+                  <td class="tg-c3ow">96.34%</td>
+                  <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
+                  <td class="tg-c3ow">94.21%</td>
+                </tr>
+
+               
+              </tbody>
+              </table>
+               
+        </div>
+      </div>
+
+      <div id="scenario_6_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: System performance - training time
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+            <table class="tg">
+              <thead>
+                <tr>
+                  <th class="tg-9wq8" rowspan="1" colspan="1">Setting</th>
+                  <th class="tg-9wq8" colspan="1">Model</th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tg-9wq8" rowspan="1"><a class="link-simple" href="https://leaf.cmu.edu/">femnist</a> 
+                     </td>
+                  <td class="tg-9wq8">Neural network<br> (lenet) </td>
+                  <td class="tg-c3ow">/ </td> 
+                  <td class="tg-c3ow">2,000 epochs<br>
+                    2,373 s<br>
+                    FedAvg </td> 
+                  <td class="tg-c3ow"> 2,000 epochs<br>
+                    1,476 s<br>
+                    FedAvg </td> 
+                  <td class="tg-c3ow">/</td> 
+                  <td class="tg-c3ow"> 2,000 epochs<br>
+                    7,268 s<br>
+                    FedAvg  </td>
+                  <td class="tg-c3ow"> 2,000 epochs<br>
+                    669 s<br>
+                    FedAvg  </td>
+                  <td class="tg-c3ow"> 2,000 epochs<br>
+                    614 ss<br>
+                    FedAvg  </td>
+                    <td class="tg-c3ow">/</td> 
+                    <td class="tg-c3ow">/</td> 
+                </tr>
+
+                <tr>
+                  <td class="tg-9wq8" rowspan="2"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_vertical </a></td>
+                  <td class="tg-9wq8">Tree-based model<br> (gbdt_64_64_6) </td>
+                  <td class="tg-c3ow"> 64 trees<br>
+                    2,800 s<br>
+                    SecureBoost  </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> 64 trees<br>
+                    9,810 s<br>
+                    SecureBoost </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> 64 trees<br>
+                    489 s<br>
+                    SecureBoost </td> 
+                </tr>
+                <tr>
+                
+                  <td class="tg-9wq8">Neural network<br> (mlp_128_128_128) </td>
+                  <td class="tg-c3ow"> 1 epoch<br> 
+                    30,952 s<br> 
+                    HE-based  </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> 10 epochs<br> 
+                    1,354 s<br> 
+                    sMPC-based </td> 
+                  <td class="tg-c3ow"> / </td> 
+                </tr>
+
+            </tbody>
+            </table>
+        </div>
+      </div>
+
+      <div id="scenario_7_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: System performance - communication cost
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+            <table class="tg">
+            <thead>
+              <tr>
+                <th class="tg-9wq8" rowspan="1" colspan="1">Setting</th>
+                <th class="tg-9wq8" colspan="1">Model</th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="tg-9wq8" rowspan="1"><a class="link-simple" href="https://leaf.cmu.edu/">femnist</a>  
+                </td>
+                <td class="tg-9wq8">Neural network<br> (lenet) </td>
+                <td class="tg-c3ow">/ </td> 
+                <td class="tg-c3ow"> 80,000 Rounds<br>
+                  19.71 GiB 
+                   </td> 
+                <td class="tg-c3ow">/ </td> 
+                <td class="tg-c3ow">/</td> 
+                <td class="tg-c3ow"> 80,000 Rounds<br>
+                  19.71 GiB 
+                   </td> 
+                <td class="tg-c3ow"> 80,714 Rounds<br>
+                  20.41 GiB
+                  </td> 
+                <td class="tg-c3ow">80,060 Rounds<br>
+                  19.966 GiB
+                  </td> 
+                  <td class="tg-c3ow">/</td> 
+                  <td class="tg-c3ow">/</td> 
+              </tr>
+
+              <tr>
+                <td class="tg-9wq8" rowspan="2"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_vertical </a>
+                    </td>
+                <td class="tg-9wq8">Tree-based model<br> (gbdt_64_64_6) </td>
+                <td class="tg-c3ow"> 2,636 Rounds
+                  N/A  </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow">50,535 Rounds<br> 
+                  1.36 GiB </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> 11,969 Rounds<br> 
+                  0.39 GiB</td> 
+              </tr>
+              <tr>
+              
+                <td class="tg-9wq8">Neural network<br> (mlp_128_128_128) </td>
+                <td class="tg-c3ow"> 1,886 Rounds<br> 
+                  N/A  </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow"> / </td> 
+                <td class="tg-c3ow">350,289 Rounds<br> 
+                  69.87 GiB</td> 
+                <td class="tg-c3ow"> / </td> 
+              </tr>
+              
+          </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="scenario_8_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Leaderboard: System performance - peak memory usage
+          </u>
+        </div>
+        <div >
+          <style type="text/css">
+            .tg  {border-collapse:collapse;border-color:#aabcfe;border-spacing:0;}
+            .tg td{background-color:#e8edff;border-color:#aabcfe;border-style:solid;border-width:1px;color:#669;
+              font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{background-color:#b9c9fe;border-color:#aabcfe;border-style:solid;border-width:1px;color:#039;
+              font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-9wq8{border-color:#aabcfe;text-align:center;vertical-align:middle}
+            .tg .tg-c3ow{border-color:#aabcfe;text-align:center;vertical-align:top}
+            </style>
+            <table class="tg">
+              <thead>
+                <tr>
+                  <th class="tg-9wq8" rowspan="1" colspan="1">Setting</th>
+                  <th class="tg-9wq8" colspan="1">Model</th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE">FATE</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/FedML-AI/FedML">FedML</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/bytedance/fedlearner">Fedlearner</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
+                  <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tg-9wq8" rowspan="1"><a class="link-simple" href="https://leaf.cmu.edu/">femnist</a>  
+                     </td>
+                  <td class="tg-9wq8">Neural network<br> (lenet) </td>
+                  <td class="tg-c3ow">/ </td> 
+                  <td class="tg-c3ow"> 0.55 GiB
+                     </td> 
+                  <td class="tg-c3ow">9.21 GiB </td> 
+                  <td class="tg-c3ow">/</td> 
+                  <td class="tg-c3ow"> 1.95 GiB
+                     </td> 
+                  <td class="tg-c3ow">52.12 GiB
+                    </td> 
+                  <td class="tg-c3ow">4.91 GiB
+                    </td> 
+                    <td class="tg-c3ow">/</td> 
+                    <td class="tg-c3ow">/</td> 
+                </tr>
+
+                <tr>
+                  <td class="tg-9wq8" rowspan="2"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_vertical </a>
+                      </td>
+                  <td class="tg-9wq8">Tree-based model<br> (gbdt_64_64_6) </td>
+                  <td class="tg-c3ow"> 9.93 GiB
+                     </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> 0.71 GiB  </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> 5.46 GiB</td> 
+                </tr>
+                <tr>
+                
+                  <td class="tg-9wq8">Neural network<br> (mlp_128_128_128) </td>
+                  <td class="tg-c3ow"> 17.50 GiB  </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow"> / </td> 
+                  <td class="tg-c3ow">0.44 GiB</td> 
+                  <td class="tg-c3ow"> / </td> 
+                </tr>
+
+            </tbody>
+            </table>
+        </div>
+      </div>
+      
+      <div id="tree_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Decision Tree for Framework Selection
+          </u>
+        </div>
+        <div class="img-zoom-container">
+          <img id="tree" src="../demo/tree.svg" style="max-height:500px; max-width:1200px;"/>
+          <br>
+          <br>
+          <div id="zoomed" class="img-zoom-result"></div>
+        </div>
       </div>
     </div>
+    
+</div>
+    
+  </div>
 
-    <table>
-      <tr>
-          <td ><center><img  src="images/FATE_logo.png" style="max-height:60px;"></center></td>
-          <td ><center><img  src="images/fedml_logo.png" style="max-height:60px;"></center></td>
-          <td ><center><img  src="images/paddlefl-logo.png" style="max-height:60px;"></center></td>
-      </tr>
-      <tr></tr>
-      <tr>
-          <td ><center><a class="nav-link" href="https://github.com/FederatedAI/FATE">FATE</a></center></td>
-          <td ><center><a class="nav-link" href="https://github.com/FedML-AI/FedML">FedML</a></center></td>
-          <td ><center><a class="nav-link" href="https://github.com/PaddlePaddle/PaddleFL">PaddleFL</a></center></td>
-      </tr>
-      <tr></tr>
-      <tr>
-        <td ><center><img  src="images/fedlearner-logo.png" style="max-height:60px;"></center></td>
-        <td ><center><img  src="images/tff-logo.png" style="max-height:60px;"></center></td>
-        <td ><center><img  src="images/flower-logo.avif" style="max-height:60px;"></center></td>
-    </tr>
-    <tr></tr>
-    <tr>
-        <td ><center><a class="nav-link" href="https://github.com/bytedance/fedlearner">Fedlearner</a></center></td>
-        <td ><center><a class="nav-link" href="https://github.com/tensorflow/federated">TFF</a></center></td>
-        <td ><center><a class="nav-link" href="https://github.com/adap/flower">Flower</a></center></td>
-    </tr>
-    <tr></tr>
-      <tr>
-        <td ><center><img  src="images/FLUTE-logo.png" style="max-height:60px;"></center></td>
-        <td ><center><img  src="images/CrypTen-logo.png" style="max-height:60px;"></center></td>
-        <td ><center><img  src="images/fedtree-logo.png" style="max-height:60px;"></center></td>
-    </tr>
-    <tr></tr>
-    <tr>
-        <td ><center><a class="nav-link" href="https://github.com/microsoft/msrflute">FLUTE</a></center></td>
-        <td ><center><a class="nav-link" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></center></td>
-        <td ><center><a class="nav-link" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></center></td>
-    </tr>
-    <tr></tr>
-  </table>
-  
-<!-- 
-    <p class="doublealign">
-      More results will be available soon.
-    </p> -->
-  
   <hr class="bottomrule" />
 
   <footer>
     <small>&copy; 2022, UniFed-leaderboard;
       <a href="https://icons8.com/icon/100413/access">Icons from Icons8</a></small>
   </footer>
-
   <script>
-    // When the user scrolls the page, execute myFunction
-    window.onscroll = function () {
-      myFunction();
-    };
-    // Get the navbar
-    var navbar = document.getElementById("navbar");
-    // Get the offset position of the navbar
-    var sticky = navbar.offsetTop;
-    // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
-    function myFunction() {
-      if (window.pageYOffset >= sticky) {
-        navbar.classList.add("sticky");
-      } else {
-        navbar.classList.remove("sticky");
-      }
-    }
-  </script>
-  <script>
-    function choice() {
-      var game = document.getElementById("games").value;
-      var cert_method = document.getElementById("cert-methods").value;
-      window.location.href = "#"+game+"_"+cert_method+"_heading";
-    }
-  </script>
-  <script>
-    $("#CartPole-v0_LoAct").load("./CartPole-v0/LoAct.html");
-    $("#CartPole-v0_GRe-mean").load("./CartPole-v0/GRe-mean.html");
-    $("#CartPole-v0_GRe-median").load("./CartPole-v0/GRe-median.html");
-    $("#CartPole-v0_LoRe").load("./CartPole-v0/LoRe.html");
-    $("#PongNoFrameskip-v4_LoAct").load("./PongNoFrameskip-v4/LoAct.html");
-    $("#PongNoFrameskip-v4_GRe-mean").load("./PongNoFrameskip-v4/GRe-mean.html");
-    $("#PongNoFrameskip-v4_GRe-median").load("./PongNoFrameskip-v4/GRe-median.html");
-    $("#PongNoFrameskip-v4_LoRe").load("./PongNoFrameskip-v4/LoRe.html");
-    $("#FreewayNoFrameskip-v4_LoAct").load("./FreewayNoFrameskip-v4/LoAct.html");
-    $("#FreewayNoFrameskip-v4_GRe-mean").load("./FreewayNoFrameskip-v4/GRe-mean.html");
-    $("#FreewayNoFrameskip-v4_GRe-median").load("./FreewayNoFrameskip-v4/GRe-median.html");
-    $("#FreewayNoFrameskip-v4_LoRe").load("./FreewayNoFrameskip-v4/LoRe.html");
-    $("#highway-fast-v0_LoAct").load("./highway-fast-v0/LoAct.html");
-    $("#highway-fast-v0_GRe-mean").load("./highway-fast-v0/GRe-mean.html");
-    $("#highway-fast-v0_GRe-median").load("./highway-fast-v0/GRe-median.html");
-    $("#highway-fast-v0_LoRe").load("./highway-fast-v0/LoRe.html");
+    imageZoom("tree", "zoomed");
   </script>
 </body>
