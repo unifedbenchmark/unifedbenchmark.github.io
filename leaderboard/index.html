@@ -44,6 +44,86 @@
       window.location.href = "#"+scenario+"_heading";
     }
   </script>
+  
+  <style>
+    * {box-sizing: border-box;}
+
+    .img-zoom-container {
+      position: relative;
+    }
+
+    .img-zoom-lens {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      /*set the size of the lens:*/
+      width: 400px;
+      height: 100px;
+    }
+
+    .img-zoom-result {
+      border: 1px solid #d4d4d4;
+      /*set the size of the result div:*/
+      width: 1200px;
+      height: 300px;
+    }
+  </style>
+  <script>
+    function imageZoom(imgID, resultID) {
+      var img, lens, result, cx, cy;
+      img = document.getElementById(imgID);
+      result = document.getElementById(resultID);
+      /*create lens:*/
+      lens = document.createElement("DIV");
+      lens.setAttribute("class", "img-zoom-lens");
+      /*insert lens:*/
+      img.parentElement.insertBefore(lens, img);
+      /*calculate the ratio between result DIV and lens:*/
+      cx = result.offsetWidth / lens.offsetWidth;
+      cy = result.offsetHeight / lens.offsetHeight;
+      /*set background properties for the result DIV:*/
+      result.style.backgroundImage = "url('" + img.src + "')";
+      result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
+      /*execute a function when someone moves the cursor over the image, or the lens:*/
+      lens.addEventListener("mousemove", moveLens);
+      img.addEventListener("mousemove", moveLens);
+      /*and also for touch screens:*/
+      lens.addEventListener("touchmove", moveLens);
+      img.addEventListener("touchmove", moveLens);
+      function moveLens(e) {
+        var pos, x, y;
+        /*prevent any other actions that may occur when moving over the image:*/
+        e.preventDefault();
+        /*get the cursor's x and y positions:*/
+        pos = getCursorPos(e);
+        /*calculate the position of the lens:*/
+        x = pos.x - (lens.offsetWidth / 2);
+        y = pos.y - (lens.offsetHeight / 2);
+        /*prevent the lens from being positioned outside the image:*/
+        if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
+        if (x < 0) {x = 0;}
+        if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
+        if (y < 0) {y = 0;}
+        /*set the position of the lens:*/
+        lens.style.left = x + "px";
+        lens.style.top = y + "px";
+        /*display what the lens "sees":*/
+        result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
+      }
+      function getCursorPos(e) {
+        var a, x = 0, y = 0;
+        e = e || window.event;
+        /*get the x and y positions of the image:*/
+        a = img.getBoundingClientRect();
+        /*calculate the cursor's x and y coordinates, relative to the image:*/
+        x = e.pageX - a.left;
+        y = e.pageY - a.top;
+        /*consider any page scrolling:*/
+        x = x - window.pageXOffset;
+        y = y - window.pageYOffset;
+        return {x : x, y : y};
+      }
+    }
+  </script>
 </head>
 
 
@@ -366,7 +446,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
               <tr>
                 <th class="tg-9wq8" rowspan="2" colspan="2">Functionality</th>
                 <th class="tg-9wq8" colspan="4">All-in-one frameworks</th>
-                <th class="tg-9wq8" colspan="3">Horizontal-only frameworks</th>
+                <th class="tg-9wq8" colspan="4">Horizontal-only frameworks</th>
                 <th class="tg-9wq8" colspan="2">Specialized frameworks</th>
               </tr>
               <tr>
@@ -377,6 +457,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <th class="tg-9wq8"><a class="link-simple" href="https://github.com/tensorflow/federated">TFF</a></th>
                 <th class="tg-9wq8"><a class="link-simple" href="https://github.com/adap/flower">Flower</a></th>
                 <th class="tg-9wq8"><a class="link-simple" href="https://github.com/microsoft/msrflute">FLUTE</a></th>
+                <th class="tg-9wq8"><a class="link-simple" href="https://github.com/SymbioticLab/FedScale">FedScale</a></th>
                 <th class="tg-9wq8"><a class="link-simple" href="https://github.com/facebookresearch/CrypTen">CrypTen</a></th>
                 <th class="tg-9wq8"><a class="link-simple" href="https://github.com/Xtra-Computing/FedTree">FedTree</a></th>
               </tr>
@@ -385,6 +466,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
               <tr>
                 <td class="tg-highlight" rowspan="3">Model support <br> for Horizontal FL</td>
                 <td class="tg-9wq8">Regression</td>
+                <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
@@ -404,12 +486,14 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">&#x2718;</td>
               </tr>
               <tr>
                 <td class="tg-9wq8">Tree-based model</td>
                 <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
@@ -429,6 +513,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#x2718;</td>
               </tr>
@@ -438,6 +523,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#9711;</td>
                 <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
@@ -454,11 +540,13 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#10004;</td>
               </tr>
               <tr>
                 <td class="tg-highlight" rowspan="3">Deployment support</td>
                 <td class="tg-9wq8">Single-host simulation</td>
+                <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
@@ -480,6 +568,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#10004;</td>
               </tr>
               <tr>
                 <td class="tg-9wq8">Cross-device deployment (more than 100 host)</td>
@@ -488,6 +577,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">N/A</td>
@@ -504,6 +594,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
               </tr>
@@ -512,6 +603,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#10004;</td>
+                <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
@@ -528,6 +620,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">&#10004;</td>
               </tr>
@@ -538,6 +631,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">N/A</td>
@@ -553,6 +647,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">N/A</td>
+                <td class="tg-c3ow">N/A</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
               </tr>
@@ -563,6 +658,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
                 <td class="tg-c3ow">&#x2718;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#x2718;</td>
+                <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
                 <td class="tg-c3ow">&#10004;</td>
@@ -1430,9 +1526,23 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
             </table>
         </div>
       </div>
-
+      
+      <div id="tree_heading">
+        <div class="heading_second">
+          <u>
+            <div style="opacity:0;">1<br>1</div> 
+            Decision Tree for Framework Selection
+          </u>
+        </div>
+        <div class="img-zoom-container">
+          <img id="tree" src="../demo/tree.svg" style="max-height:500px; max-width:1200px;"/>
+          <br>
+          <br>
+          <div id="zoomed" class="img-zoom-result"></div>
+        </div>
+      </div>
     </div>
-
+    
 </div>
     
   </div>
@@ -1443,4 +1553,7 @@ Please find more details in our paper <a href="https://unifedbenchmark.github.io
     <small>&copy; 2022, UniFed-leaderboard;
       <a href="https://icons8.com/icon/100413/access">Icons from Icons8</a></small>
   </footer>
+  <script>
+    imageZoom("tree", "zoomed");
+  </script>
 </body>
