@@ -17,7 +17,7 @@
   <meta name="viewport" content="width=1024" />
   <title>UniFed: All-In-One Federated Learning Platform to Unify Open-Source Frameworks </title>
   <!-- <link rel="icon" type="image/png" href="./images/new_logo.png"> -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -29,14 +29,34 @@
   <script src="https://kit.fontawesome.com/b939870cfb.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.foundation.min.css">
-  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/dataTables.foundation.min.js"></script>
   <!-- <script type="text/javascript" src="/static/js/jquery.min.js"></script> -->
 
   <link rel="stylesheet" href="./css/main.css" />
   <script src="https://d3js.org/d3.v4.js"></script>
-  
+
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="scripts/jquery.maphilight.js"></script>
+  <script type="text/javascript">$(function() {
+      $('.map').maphilight();
+      $('#wizardlink').mouseover(function(e) {
+          $('#wizard').mouseover();
+      }).mouseout(function(e) {
+          $('#wizard').mouseout();
+      }).click(function(e) { e.preventDefault(); });
+      $('#recuilink').mouseover(function(e) {
+          $('#recui').mouseover();
+      }).mouseout(function(e) {
+          $('#recui').mouseout();
+      }).click(function(e) { e.preventDefault(); });
+      $('#treelink').mouseover(function(e) {
+          $('#tree').mouseover();
+      }).mouseout(function(e) {
+          $('#tree').mouseout();
+      }).click(function(e) { e.preventDefault(); });
+  });</script>
 </head>
 
 
@@ -105,7 +125,10 @@
           With 15 evaluation scenarios, we present both qualitative and quantitative evaluation results of nine existing popular open-sourced FL frameworks, from the perspectives of functionality, usability, and system performance. We also provide
           suggestions on framework selection based on the benchmark conclusions and point out future improvement directions.
 <!-- Please find more details in our paper <a href="https://openreview.net/pdf?id=KYcoRmqdY-">here</a>. -->
-Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.pdf">here</a>.
+          Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.pdf">here</a>.
+        </p>
+        <p class="doublealign">
+          From the functionality and usability survey, we built a <a id="treelink" href="https://unifedbenchmark.github.io/leaderboard/index.html">decision tree</a> to help users choose the best FL framework for their scenarios. This can be more easily accessed through our <a id="recuilink" href="https://unifedbenchmark.github.io/select/">recommendation system</a>. Finally, we built <a id="wizardlink" href="https://unifed-wizard.colearn.cloud/">a wizard</a> to generate the configuration file for testing scenarios.
         </p>
       </div>
     </section>
@@ -120,7 +143,17 @@ Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.
     </div>
     <table>
         <tr>
-            <td ><center><img  src="images/workflow-design.png" style="max-height:500px;"></center></td>
+            <td >
+              <center>
+                <img src="images/workflow-design.png" style="max-height:500px;max-width: 850px;" class="map" usemap="#simple">
+
+                <map name="simple">
+                    <area id="tree" href="https://unifedbenchmark.github.io/leaderboard/index.html" coords="12,65,280,236" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
+                    <area id="recui" href="https://unifedbenchmark.github.io/select/" coords="316,22,430,245" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
+                    <area id="wizard" href="https://unifed-wizard.colearn.cloud/" coords="522,22,623,242" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
+                </map>
+              </center>
+            </td>
         </tr>
         <tr></tr>
         <tr>
