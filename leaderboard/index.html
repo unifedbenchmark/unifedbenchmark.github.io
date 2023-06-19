@@ -1204,7 +1204,7 @@ Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <!-- <tr>
                   <td class="tg-highlight" rowspan="3">cross-device <br>
                     horizontal</td>
                   <td class="tg-9wq8"><a class="link-simple" href="https://leaf.cmu.edu/">celeba</a><br>
@@ -1238,68 +1238,63 @@ Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.
                   <td class="tg-c3ow"></td>
                   <td class="tg-c3ow"> </td>
                   <td class="tg-c3ow"></td>
-                </tr>
+                </tr> -->
 
                 <tr>
                   <td class="tg-highlight" rowspan="5">cross-silo <br>
                     horizontal</td>
                   <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> breast_horizontal </a><br>
                     (AUC ↑)</td>
-                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128 </td>
-                  <td class="tg-c3ow">98.86%</td>
-                  <td class="tg-c3ow">FedAvg<br>
-                    logistic_regression</td>
-                  <td class="tg-c3ow">98.70%</td>
+                  <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
+                  <td class="tg-c3ow">1.0000</br>± 0.0000</td>
+                  <td class="tg-c3ow">FedAvg<br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">0.9874</br>± 0.0026</td>
                   <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
-                  <td class="tg-c3ow">98.54%</td>
+                  <td class="tg-c3ow">0.9869</br>± 0.0014</td>
                 </tr>
                 <tr>
                   <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> default_credit_horizontal </a><br>
                     (AUC ↑)</td>
                   <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
-                  <td class="tg-c3ow">78.46%</td>
-                  <td class="tg-c3ow">FedAvg<br>
-                    mlp_128_128_128</td>
-                  <td class="tg-c3ow">77.70%</td>
+                  <td class="tg-c3ow">0.7772</br>± 0.0000</td>
+                  <td class="tg-c3ow">FedAvg<br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">0.7762</br>± 0.0014</td>
                   <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
-                  <td class="tg-c3ow">77.21%</td>
+                  <td class="tg-c3ow">0.7649</br>± 0.0056</td>
                 </tr>
                 <tr>
                   <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> give_credit_horizontal </a><br>
                     (AUC ↑)</td>
                   <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
-                  <td class="tg-c3ow">86.10%</td>
-                  <td class="tg-c3ow">FedAvg<br>
-                    mlp_128_128_128</td>
-                  <td class="tg-c3ow">83.45% </td>
-                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
-                  <td class="tg-c3ow">83.38%</td>
+                  <td class="tg-c3ow">0.8610</br>± 0.0000</td>
+                  <td class="tg-c3ow">FedAvg<br>mlp_128</td>
+                  <td class="tg-c3ow">0.8357</br>± 0.0006</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128</td>
+                  <td class="tg-c3ow">0.8351</br>± 0.0060</td>
                 </tr>
                 <tr>
                   <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> student_horizontal </a><br>
                     (MSE ↓)</td>
-                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128 </td>
-                  <td class="tg-c3ow">21.04</td>
-                  <td class="tg-c3ow">FedAvg<br>
-                    mlp_128</td>
-                  <td class="tg-c3ow">21.99 </td>
                   <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
-                  <td class="tg-c3ow">22.79</td>
+                  <td class="tg-c3ow">22.56</br>± 0.98</td>
+                  <td class="tg-c3ow">FedAvg<br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">23.16</br>± 0.44</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
+                  <td class="tg-c3ow">23.41</br>± 0.39</td>
                 </tr>
                 <tr>
                   <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> vehicle_scale_horizontal </a><br>
                     (Accuracy ↑)</td>
-                  <td class="tg-c3ow">FedAvg <br>mlp_128_128_128 </td>
-                  <td class="tg-c3ow">100.0%</td>
-                  <td class="tg-c3ow">FedAvg<br>
-                    mlp_128</td>
-                  <td class="tg-c3ow">100.0% </td>
+                  <td class="tg-c3ow">FedAvg<br>mlp_128_128_128 </td>
+                  <td class="tg-c3ow">1.0000</br>± 0.0000</td>
+                  <td class="tg-c3ow">FedAvg <br>mlp_128 </td>
+                  <td class="tg-c3ow">1.0000</br>± 0.0000</td>
                   <td class="tg-c3ow">HistSecAgg <br>gbdt_64_64_6 </td>
-                  <td class="tg-c3ow">99.64%</td>
+                  <td class="tg-c3ow">0.9906</br>± 0.0000</td>
                 </tr>
 
 
-                <tr>
+                <!-- <tr>
                   <td class="tg-highlight" rowspan="7">vertical</td>
                   <td class="tg-9wq8"><a class="link-simple" href="https://github.com/FederatedAI/FATE/tree/master/examples/data"> breast_vertical </a><br>
                     (AUC ↑)</td>
@@ -1376,7 +1371,7 @@ Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.
                   <td class="tg-c3ow">96.34%</td>
                   <td class="tg-c3ow">sMPC-based <br>mlp_128 </td>
                   <td class="tg-c3ow">94.21%</td>
-                </tr>
+                </tr> -->
 
                
               </tbody>
