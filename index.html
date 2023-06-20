@@ -56,6 +56,11 @@
       }).mouseout(function(e) {
           $('#tree').mouseout();
       }).click(function(e) { e.preventDefault(); });
+      $('#configlink').mouseover(function(e) {
+          $('#config').mouseover();
+      }).mouseout(function(e) {
+          $('#config').mouseout();
+      }).click(function(e) { e.preventDefault(); });
   });</script>
 </head>
 
@@ -121,14 +126,13 @@
     <section id="introduction">
       <div class="overview">
         <p class="doublealign">
-          The goal of <b>UniFed</b> is to systematically evaluate the existing open-source FL frameworks. 
-          With 15 evaluation scenarios, we present both qualitative and quantitative evaluation results of nine existing popular open-sourced FL frameworks, from the perspectives of functionality, usability, and system performance. We also provide
-          suggestions on framework selection based on the benchmark conclusions and point out future improvement directions.
-<!-- Please find more details in our paper <a href="https://openreview.net/pdf?id=KYcoRmqdY-">here</a>. -->
+          The goal of <b>UniFed</b> is to systematically evaluate the existing open-source FL frameworks, and therefore make recommendations for proper FL frameworks, algorithms, and configurations automatically based on user requests. 
+          In addition, with 15 evaluation scenarios, we present both qualitative and quantitative evaluation results of 11 popular open-sourced FL frameworks, from the perspectives of functionality, usability, and system performance for comparison. 
           Please find more details in our paper <a href="https://arxiv.org/pdf/2207.10308.pdf">here</a>.
         </p>
         <p class="doublealign">
-          From the functionality and usability survey, we built a <a id="treelink" href="https://unifedbenchmark.github.io/leaderboard/index.html">decision tree</a> to help users choose the best FL framework for their scenarios. This can be more easily accessed through our <a id="recuilink" href="https://unifedbenchmark.github.io/select/">recommendation system</a>. Finally, we built <a id="wizardlink" href="https://unifed-wizard.colearn.cloud/">a wizard</a> to generate the configuration file for testing scenarios.
+          Based on our performance, functionality, and usability evaluation and survey, we built a <a id="treelink" href="https://unifedbenchmark.github.io/leaderboard/index.html">decision tree</a> to help users choose the best FL framework for their scenarios, which can be easily accessed through our <a id="recuilink" href="https://unifedbenchmark.github.io/select/">FL recommendation framework</a>.
+          We also provide an <a id="wizardlink" href="https://unifed-wizard.colearn.cloud/">Auto-Run</a> function to automatically generate preferred FL configurations, allowing users to easily use any integrated FL framework and corresponding settings based on their use case.
         </p>
       </div>
     </section>
@@ -151,18 +155,33 @@
                     <area id="tree" href="https://unifedbenchmark.github.io/leaderboard/index.html" coords="12,65,280,236" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
                     <area id="recui" href="https://unifedbenchmark.github.io/select/" coords="316,22,430,245" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
                     <area id="wizard" href="https://unifed-wizard.colearn.cloud/" coords="522,22,623,242" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
+                    <area id="config" href="https://github.com/AI-secure/FLBenchmark-toolkit/blob/main/exp/config.json" coords="674,65,840,236" shape="rect" data-maphilight='{"stroke":false,"fillColor":"ffff00","fillOpacity":0.5}'>
                 </map>
               </center>
             </td>
         </tr>
         <tr></tr>
         <tr>
-          <td ><center>Design of the Benchmark Workflow</center></td>
+          <td ><center>Design of the UniFed Platform</center></td>
         </tr>
        <tr></tr>
     </table>
 
-    <div id="leaderboard" class="container button-list">
+    <p class="doublealign">
+      ① From the functionality and usability survey, we built a <a id="treelink" href="https://unifedbenchmark.github.io/leaderboard/index.html">decision tree</a> to help users choose the best FL framework for their scenarios. 
+      This can be more easily accessed through our <a id="recuilink" href="https://unifedbenchmark.github.io/select/">recommendation system</a>. 
+    </p>
+    <p class="doublealign">  
+      ② After finding potential matching frameworks, the user can use the <a id="wizardlink" href="https://unifed-wizard.colearn.cloud/">Auto-Run</a> to generate the configuration file for testing scenarios.
+    </p>
+    <p class="doublealign">
+      ③ Given the <a id="configlink" href="https://github.com/AI-secure/FLBenchmark-toolkit/blob/main/exp/config.json">configuration file</a> as input, UniFed initiates a distributed training task using the user-specified framework and data source.
+    </p>
+    <p class="doublealign">
+      ④ UniFed outputs the trained model, as well as the distributed execution log in a consistent format, which can be directly used for framework comparison. One can further investigate the log by connecting with other data analysis platforms integrated with UniFed.
+    </p>
+
+    <!-- <div id="leaderboard" class="container button-list">
       <div class="heading">
         <u>
           Choose the Best FL Framework for You
@@ -181,12 +200,11 @@
       <br>
 
       <a href="https://unifedbenchmark.github.io/leaderboard/index.html#scenario_1_heading">
-        <!-- <button class = "bn33"> -->
           <button class = "bn29">
           Comparison of different frameworks
         </button>
       </a>
-    </div>
+    </div> -->
 
     <div id="leaderboard" class="container button-list">
       <div class="heading">
